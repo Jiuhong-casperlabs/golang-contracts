@@ -32,7 +32,7 @@ func main() {
 	amountBytes, _ := serialization.Marshal(serialization.U512{Int: *amount})
 
 	// set delegation_rate = 4
-	delegation_rate, err := serialization.Marshal(uint8(0004))
+	delegation_rate, err := serialization.Marshal(uint8(4))
 
 	// set args order
 	var argsOrder []string
