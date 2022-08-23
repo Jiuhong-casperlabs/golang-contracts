@@ -1,21 +1,33 @@
 ## golang client for casper auction contracts
 
-### StoredContractByHash
-[StoredContractByHash](StoredContractByHash/main.go)
 
-### native transfer
-[native transfer](transfer/main.go)
+- ### simple types
+  [simple_args_demo](simple_args_demo/main.go)
 
 
-### delegate
-[delegate](delegate.go)
+- ### option types
+  [option_demo](option_demo/main.go)
 
 
-### undelegate
-[undelegate](undelegate/main.go)
+- ### key types
+  [key_type_demo](key_type_demo/main.go)
 
-### bond
-[bond](bond/main.go)
+- ### StoredContractByHash
+  [StoredContractByHash](StoredContractByHash/main.go)
 
-### unbond
-[unbond](unbond/main.go)
+- ### native transfer
+  [native transfer](transfer/main.go)
+
+
+- ### delegate
+  [delegate](delegate.go)
+
+
+- ### undelegate
+  [undelegate](undelegate/main.go)
+
+- ### bond
+  [bond](bond/main.go)
+
+- ### unbond
+  [unbond](unbond/main.go)
