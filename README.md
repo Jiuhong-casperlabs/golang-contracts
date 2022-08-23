@@ -1,6 +1,7 @@
-## golang client for casper contracts
+## golang client for casper auction contracts
 
-
+### StoredContractByHash
+[StoredContractByHash](StoredContractByHash/main.go)
 
 ### native transfer
 [native transfer](transfer/main.go)
