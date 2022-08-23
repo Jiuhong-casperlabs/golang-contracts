@@ -6,11 +6,11 @@
 
 
 - ### option types
-  [option_demo](option_demo/main.go)
+  [option_args_demo](option_demo/main.go)
 
 
 - ### key types
-  [key_type_demo](key_type_demo/main.go)
+  [key_args_demo](key_type_demo/main.go)
 
 - ### StoredContractByHash
   [StoredContractByHash](StoredContractByHash/main.go)
