@@ -78,7 +78,7 @@ func main() {
 	item_key := b64.StdEncoding.EncodeToString(item_key_bytes)
 
 	// === step2 get state-root-hash===
-	resp, err := rpcCall("chain_get_state_root_hash",nil)
+	resp, err := rpcCall("chain_get_state_root_hash", nil)
 	b, _ := json.Marshal(resp)
 	if err != nil {
 		fmt.Println(err)
@@ -93,8 +93,8 @@ func main() {
 	// === step3 get rpc ===========
 	contractNamedKey := map[string]string{
 		"key":                 contract_hash, //contract hash
-		"dictionary_name":     "balances",                                                              //dictionary uref name
-		"dictionary_item_key": item_key,                          // dictionary item key
+		"dictionary_name":     "balances",    //dictionary uref name
+		"dictionary_item_key": item_key,      // dictionary item key
 	}
 	dictionary_identifier := map[string]interface{}{
 		"ContractNamedKey": contractNamedKey,
@@ -118,13 +118,14 @@ func main() {
 	fmt.Printf("balance=> %s\n", result.Result.Stored_value.CLValue.Parsed)
 
 }
+
 type State_root_hash_Result struct {
-    Jsonrpc string
-	Id string
-    Result struct {
-        Api_version string
-        State_root_hash string
-    }
+	Jsonrpc string
+	Id      string
+	Result  struct {
+		Api_version     string
+		State_root_hash string
+	}
 }
 
 type Dictionary_value_Result struct {
@@ -160,5 +161,3 @@ type RpcError struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 }
-
-
