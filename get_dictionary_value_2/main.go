@@ -55,6 +55,8 @@ func rpcCall(method string, params interface{}) (RpcResponse, error) {
 }
 func main() {
 
+	// contract hash "hash-4120116565bd608fae6a45078055f320a2f429f426c86797b072b4efd15b186a"
+	const contract_hash = "hash-4120116565bd608fae6a45078055f320a2f429f426c86797b072b4efd15b186a"
 	// public_key: 0125a6336791eba195c472a8b7dbcd256a6ecddf8863e586a3dfefe2581a5d672c
 	const publKey = "25a6336791eba195c472a8b7dbcd256a6ecddf8863e586a3dfefe2581a5d672c"
 	publKeyBytes, err := hex.DecodeString(publKey)
@@ -72,25 +74,37 @@ func main() {
 
 	// === step1 get dictionary_item_key ===
 	zero := []byte{0}
-	five := append(zero, resultHex...)
-	sEnc := b64.StdEncoding.EncodeToString(five)
-	fmt.Println("dictionary_item_key => ", sEnc)
+	item_key_bytes := append(zero, resultHex...)
+	item_key := b64.StdEncoding.EncodeToString(item_key_bytes)
 
-	// === step2 get rpc ===========
+	// === step2 get state-root-hash===
+	resp, err := rpcCall("chain_get_state_root_hash",nil)
+	b, _ := json.Marshal(resp)
+	if err != nil {
+		fmt.Println(err)
+	}
+	var result1 State_root_hash_Result
+	err = json.Unmarshal(b, &result1)
+	if err != nil {
+		fmt.Println(err)
+	}
+	state_root_hash := result1.Result.State_root_hash
+
+	// === step3 get rpc ===========
 	contractNamedKey := map[string]string{
-		"key":                 "hash-4120116565bd608fae6a45078055f320a2f429f426c86797b072b4efd15b186a", //contract hash
+		"key":                 contract_hash, //contract hash
 		"dictionary_name":     "balances",                                                              //dictionary uref name
-		"dictionary_item_key": "ACKTIjQn1Z67MxrCIhw/zRs2VqXLcr6SSmzcnVLNttsP",                          // dictionary item key
+		"dictionary_item_key": item_key,                          // dictionary item key
 	}
 	dictionary_identifier := map[string]interface{}{
 		"ContractNamedKey": contractNamedKey,
 	}
-	resp, err := rpcCall("state_get_dictionary_item", map[string]interface{}{
-		"state_root_hash":       "b3c86cee029b5f4a3a49dcad38a91aa1b79efd0e580aa5b89ded1a2a718b9dc7",
+	resp, err = rpcCall("state_get_dictionary_item", map[string]interface{}{
+		"state_root_hash":       state_root_hash,
 		"dictionary_identifier": dictionary_identifier,
 	})
 
-	b, _ := json.Marshal(resp)
+	b, _ = json.Marshal(resp)
 
 	if err != nil {
 		fmt.Println(err)
@@ -104,7 +118,30 @@ func main() {
 	fmt.Printf("balance=> %s\n", result.Result.Stored_value.CLValue.Parsed)
 
 }
+type State_root_hash_Result struct {
+    Jsonrpc string
+	Id string
+    Result struct {
+        Api_version string
+        State_root_hash string
+    }
+}
 
+type Dictionary_value_Result struct {
+	Jsonrpc string
+	Id      string
+	Result  struct {
+		Api_version    string
+		Dictionary_key string
+		Stored_value   struct {
+			CLValue struct {
+				Cl_type string
+				Bytes   string
+				Parsed  string
+			}
+		}
+	}
+}
 type RpcRequest struct {
 	Version string      `json:"jsonrpc"`
 	Id      string      `json:"id"`
@@ -124,18 +161,4 @@ type RpcError struct {
 	Message string `json:"message"`
 }
 
-type Dictionary_value_Result struct {
-	Jsonrpc string
-	Id      string
-	Result  struct {
-		Api_version    string
-		Dictionary_key string
-		Stored_value   struct {
-			CLValue struct {
-				Cl_type string
-				Bytes   string
-				Parsed  string
-			}
-		}
-	}
-}
+
