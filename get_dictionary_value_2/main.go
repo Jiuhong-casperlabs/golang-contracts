@@ -73,7 +73,7 @@ func main() {
 	}
 
 	// === step1 get dictionary_item_key ===
-	zero := []byte{0}
+	zero := []byte{0}   // 0 for account ; 1 for contract package
 	item_key_bytes := append(zero, resultHex...)
 	item_key := b64.StdEncoding.EncodeToString(item_key_bytes)
 
